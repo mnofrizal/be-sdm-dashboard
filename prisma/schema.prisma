@@ -1,0 +1,188 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql" // or "mysql", "sqlite", etc.
+    url      = env("DATABASE_URL")
+}
+
+model MasterKlausul {
+    id        String   @id @default(cuid())
+    kode      String   @unique // e.g., "9.4", "8.1"
+    nama      String
+    deskripsi String?
+    isActive  Boolean  @default(true)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    pilar MasterPilar[]
+
+    @@map("master_klausul")
+}
+
+model MasterPilar {
+    id        String   @id @default(cuid())
+    klausulId String
+    nama      String // "Pendeteksian", "Pencegahan"
+    deskripsi String?
+    isActive  Boolean  @default(true)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    klausul MasterKlausul  @relation(fields: [klausulId], references: [id], onDelete: Cascade)
+    elemen  MasterElemen[]
+
+    @@unique([klausulId, nama])
+    @@map("master_pilar")
+}
+
+model MasterElemen {
+    id        String   @id @default(cuid())
+    pilarId   String
+    nama      String // "Pelaporan", "Monitoring"
+    deskripsi String?
+    isActive  Boolean  @default(true)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    pilar     MasterPilar       @relation(fields: [pilarId], references: [id], onDelete: Cascade)
+    subElemen MasterSubElemen[]
+
+    @@unique([pilarId, nama])
+    @@map("master_elemen")
+}
+
+model MasterSubElemen {
+    id        String   @id @default(cuid())
+    elemenId  String
+    nama      String // "Tinjauan Tim Kepatuhan", "Risk Assessment"
+    deskripsi String?
+    isActive  Boolean  @default(true)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    elemen     MasterElemen       @relation(fields: [elemenId], references: [id], onDelete: Cascade)
+    pengukuran PengukuranMaster[]
+
+    @@unique([elemenId, nama])
+    @@map("master_sub_elemen")
+}
+
+model PengukuranMaster {
+    id                String   @id @default(cuid())
+    subElemenId       String
+    namaPengukuran    String // Yang membedakan setiap record
+    jadwalPengerjaan  String // e.g., "Dilakukan setiap semester", "Triwulan"
+    kualitasPemenuhan String
+    indikator         String   @db.Text
+    evidence          String   @db.Text
+    linkEvidence      String?  @db.Text
+    pic               String
+    isActive          Boolean  @default(true)
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+    createdBy         String?
+    updatedBy         String?
+
+    // Relations
+    subElemen           MasterSubElemen       @relation(fields: [subElemenId], references: [id], onDelete: Cascade)
+    pelaksanaanSemester PelaksanaanSemester[]
+
+    @@unique([subElemenId, namaPengukuran])
+    @@map("pengukuran_master")
+}
+
+enum StatusPelaksanaan {
+    PLANNED
+    IN_PROGRESS
+    REVIEW
+    COMPLETED
+    OVERDUE
+    CANCELLED
+    ON_HOLD
+}
+
+enum SemesterType {
+    S1
+    S2
+}
+
+model PelaksanaanSemester {
+    id                 String            @id @default(cuid())
+    pengukuranId       String
+    semester           SemesterType
+    tahun              Int
+    tanggalTarget      String // Format: DD/MM/YYYY
+    tanggalMulai       String?
+    tanggalSelesai     String?
+    status             StatusPelaksanaan @default(PLANNED)
+    progress           Int               @default(0) // 0-100
+    catatan            String?           @db.Text
+    evidenceActual     String?           @db.Text
+    linkEvidenceActual String?           @db.Text
+    picPelaksana       String
+    createdAt          DateTime          @default(now())
+    updatedAt          DateTime          @updatedAt
+    createdBy          String?
+    updatedBy          String?
+
+    // Relations
+    pengukuran PengukuranMaster @relation(fields: [pengukuranId], references: [id], onDelete: Cascade)
+    historyLog HistoryLog[]
+
+    @@unique([pengukuranId, semester, tahun])
+    @@map("pelaksanaan_semester")
+}
+
+model HistoryLog {
+    id                    String   @id @default(cuid())
+    pelaksanaanSemesterId String
+    action                String // "CREATE", "UPDATE_STATUS", "UPDATE_PROGRESS", "ADD_EVIDENCE", etc.
+    oldValue              String?  @db.Text
+    newValue              String?  @db.Text
+    description           String?  @db.Text
+    createdAt             DateTime @default(now())
+    createdBy             String?
+
+    // Relations
+    pelaksanaanSemester PelaksanaanSemester @relation(fields: [pelaksanaanSemesterId], references: [id], onDelete: Cascade)
+
+    @@map("history_log")
+}
+
+// Optional: User management
+model User {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    name      String
+    role      String // "ADMIN", "USER", "VIEWER"
+    isActive  Boolean  @default(true)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("users")
+}
+
+// Optional: File attachments
+model FileAttachment {
+    id           String   @id @default(cuid())
+    fileName     String
+    originalName String
+    filePath     String
+    fileSize     Int
+    mimeType     String
+    relatedTo    String // "pengukuran" or "pelaksanaan"
+    relatedId    String
+    uploadedBy   String?
+    createdAt    DateTime @default(now())
+
+    @@map("file_attachments")
+}

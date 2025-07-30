@@ -1,0 +1,463 @@
+### Health Check
+GET http://localhost:3000/health
+
+### API Documentation
+GET http://localhost:3000/api
+
+###
+### MASTER KLAUSUL ENDPOINTS
+###
+
+### Get all klausul
+GET http://localhost:3000/api/master-klausul
+
+### Get all klausul with pagination
+GET http://localhost:3000/api/master-klausul?page=1&limit=5
+
+### Get all klausul with search
+GET http://localhost:3000/api/master-klausul?search=9.4
+
+### Get all klausul with filter
+GET http://localhost:3000/api/master-klausul?isActive=true
+
+### Get all klausul filtered by semester S1
+GET http://localhost:3000/api/master-klausul?semester=S1
+
+### Get all klausul filtered by semester S2
+GET http://localhost:3000/api/master-klausul?semester=S2
+
+### Get all klausul filtered by year 2024
+GET http://localhost:3000/api/master-klausul?tahun=2024
+
+### Get all klausul filtered by semester S1 and year 2024
+GET http://localhost:3000/api/master-klausul?semester=S1&tahun=2024
+
+### Get all klausul filtered by semester S2 and year 2024
+GET http://localhost:3000/api/master-klausul?semester=S2&tahun=2024
+
+### Create new klausul
+POST http://localhost:3000/api/master-klausul
+Content-Type: application/json
+
+{
+  "kode": "9.4",
+  "nama": "Sistem Pengendalian Intern",
+  "deskripsi": "Klausul tentang sistem pengendalian intern perusahaan",
+  "isActive": true
+}
+
+### Create another klausul
+POST http://localhost:3000/api/master-klausul
+Content-Type: application/json
+
+{
+  "kode": "8.1",
+  "nama": "Manajemen Risiko",
+  "deskripsi": "Klausul tentang manajemen risiko operasional",
+  "isActive": true
+}
+
+### Get klausul by ID (replace with actual ID)
+GET http://localhost:3000/api/master-klausul/{{klausul_id}}
+
+### Get klausul with statistics and complete hierarchy
+GET http://localhost:3000/api/master-klausul/{{klausul_id}}/stats
+
+### Get klausul with statistics filtered by year
+GET http://localhost:3000/api/master-klausul/{{klausul_id}}/stats?tahun=2024
+
+### Get klausul by ID filtered by semester S1
+GET http://localhost:3000/api/master-klausul/{{klausul_id}}?semester=S1
+
+### Get klausul by ID filtered by semester S2 and year 2024
+GET http://localhost:3000/api/master-klausul/{{klausul_id}}?semester=S2&tahun=2024
+
+### Get klausul with statistics filtered by semester S1
+GET http://localhost:3000/api/master-klausul/{{klausul_id}}/stats?semester=S1
+
+### Get klausul with statistics filtered by semester S2 and year 2024
+GET http://localhost:3000/api/master-klausul/{{klausul_id}}/stats?semester=S2&tahun=2024
+
+### Update klausul (replace with actual ID)
+PUT http://localhost:3000/api/master-klausul/{{klausul_id}}
+Content-Type: application/json
+
+{
+  "kode": "9.4",
+  "nama": "Sistem Pengendalian Intern - Updated",
+  "deskripsi": "Updated description",
+  "isActive": true
+}
+
+### Delete klausul (replace with actual ID)
+DELETE http://localhost:3000/api/master-klausul/{{klausul_id}}
+
+###
+### MASTER PILAR ENDPOINTS
+###
+
+### Get all pilar
+GET http://localhost:3000/api/master-pilar
+
+### Get all pilar with filter by klausul
+GET http://localhost:3000/api/master-pilar?klausulId={{klausul_id}}
+
+### Create new pilar (replace klausulId with actual ID)
+POST http://localhost:3000/api/master-pilar
+Content-Type: application/json
+
+{
+  "klausulId": "{{klausul_id}}",
+  "nama": "Pendeteksian",
+  "deskripsi": "Pilar pendeteksian dalam sistem pengendalian intern",
+  "isActive": true
+}
+
+### Create another pilar
+POST http://localhost:3000/api/master-pilar
+Content-Type: application/json
+
+{
+  "klausulId": "{{klausul_id}}",
+  "nama": "Pencegahan",
+  "deskripsi": "Pilar pencegahan dalam sistem pengendalian intern",
+  "isActive": true
+}
+
+### Get pilar by ID (replace with actual ID)
+GET http://localhost:3000/api/master-pilar/{{pilar_id}}
+
+### Update pilar (replace with actual ID)
+PUT http://localhost:3000/api/master-pilar/{{pilar_id}}
+Content-Type: application/json
+
+{
+  "klausulId": "{{klausul_id}}",
+  "nama": "Pendeteksian - Updated",
+  "deskripsi": "Updated description",
+  "isActive": true
+}
+
+### Delete pilar (replace with actual ID)
+DELETE http://localhost:3000/api/master-pilar/{{pilar_id}}
+
+###
+### PELAKSANAAN SEMESTER ENDPOINTS
+###
+
+### Get all pelaksanaan semester
+GET http://localhost:3000/api/pelaksanaan-semester
+
+### Get pelaksanaan semester with filters
+GET http://localhost:3000/api/pelaksanaan-semester?status=PLANNED&semester=S1&tahun=2024
+
+### Get dashboard statistics
+GET http://localhost:3000/api/pelaksanaan-semester/dashboard-stats
+
+### Get dashboard statistics with filters
+GET http://localhost:3000/api/pelaksanaan-semester/dashboard-stats?tahun=2024&semester=S1
+
+### Create new pelaksanaan semester (replace pengukuranId with actual ID)
+POST http://localhost:3000/api/pelaksanaan-semester
+Content-Type: application/json
+
+{
+  "pengukuranId": "{{pengukuran_id}}",
+  "semester": "S1",
+  "tahun": 2024,
+  "tanggalTarget": "31/03/2024",
+  "tanggalMulai": "01/01/2024",
+  "status": "PLANNED",
+  "progress": 0,
+  "catatan": "Pelaksanaan semester 1 tahun 2024",
+  "picPelaksana": "John Doe",
+  "createdBy": "admin"
+}
+
+### Create another pelaksanaan semester
+POST http://localhost:3000/api/pelaksanaan-semester
+Content-Type: application/json
+
+{
+  "pengukuranId": "{{pengukuran_id}}",
+  "semester": "S2",
+  "tahun": 2024,
+  "tanggalTarget": "30/09/2024",
+  "status": "PLANNED",
+  "progress": 0,
+  "picPelaksana": "Jane Smith",
+  "createdBy": "admin"
+}
+
+### Get pelaksanaan semester by ID (replace with actual ID)
+GET http://localhost:3000/api/pelaksanaan-semester/{{pelaksanaan_id}}
+
+### Update pelaksanaan semester (replace with actual ID)
+PUT http://localhost:3000/api/pelaksanaan-semester/{{pelaksanaan_id}}
+Content-Type: application/json
+
+{
+  "pengukuranId": "{{pengukuran_id}}",
+  "semester": "S1",
+  "tahun": 2024,
+  "tanggalTarget": "31/03/2024",
+  "tanggalMulai": "01/01/2024",
+  "tanggalSelesai": "30/03/2024",
+  "status": "COMPLETED",
+  "progress": 100,
+  "catatan": "Completed successfully",
+  "evidenceActual": "Evidence document uploaded",
+  "linkEvidenceActual": "https://example.com/evidence",
+  "picPelaksana": "John Doe",
+  "updatedBy": "admin"
+}
+
+### Update status only (replace with actual ID)
+PATCH http://localhost:3000/api/pelaksanaan-semester/{{pelaksanaan_id}}/status
+Content-Type: application/json
+
+{
+  "status": "IN_PROGRESS",
+  "updatedBy": "admin"
+}
+
+### Update progress only (replace with actual ID)
+PATCH http://localhost:3000/api/pelaksanaan-semester/{{pelaksanaan_id}}/progress
+Content-Type: application/json
+
+{
+  "progress": 50,
+  "updatedBy": "admin"
+}
+
+### Delete pelaksanaan semester (replace with actual ID)
+DELETE http://localhost:3000/api/pelaksanaan-semester/{{pelaksanaan_id}}
+
+###
+### ERROR TESTING
+###
+
+### Test validation error - missing required field
+POST http://localhost:3000/api/master-klausul
+Content-Type: application/json
+
+{
+  "nama": "Test without kode"
+}
+
+### Test validation error - invalid status
+POST http://localhost:3000/api/pelaksanaan-semester
+Content-Type: application/json
+
+{
+  "pengukuranId": "test-id",
+  "semester": "S1",
+  "tahun": 2024,
+  "tanggalTarget": "31/03/2024",
+  "status": "INVALID_STATUS",
+  "picPelaksana": "Test User"
+}
+
+### Test 404 error - non-existent endpoint
+GET http://localhost:3000/api/non-existent
+
+### Test 404 error - non-existent resource
+GET http://localhost:3000/api/master-klausul/non-existent-id
+
+###
+### SAMPLE DATA CREATION FLOW
+###
+
+### 1. Create Klausul
+POST http://localhost:3000/api/master-klausul
+Content-Type: application/json
+
+{
+  "kode": "9.4",
+  "nama": "Sistem Pengendalian Intern",
+  "deskripsi": "Klausul tentang sistem pengendalian intern perusahaan"
+}
+
+### 2. Create Pilar (use klausul ID from step 1)
+POST http://localhost:3000/api/master-pilar
+Content-Type: application/json
+
+{
+  "klausulId": "REPLACE_WITH_KLAUSUL_ID",
+  "nama": "Pendeteksian",
+  "deskripsi": "Pilar pendeteksian dalam sistem pengendalian intern"
+}
+
+### 3. You would need to create Elemen, SubElemen, and PengukuranMaster
+### before creating PelaksanaanSemester (controllers not included in this basic setup)
+
+###
+### BULK TESTING
+###
+
+### Create multiple klausul for testing
+POST http://localhost:3000/api/master-klausul
+Content-Type: application/json
+
+{
+  "kode": "8.1",
+  "nama": "Manajemen Risiko",
+  "deskripsi": "Klausul tentang manajemen risiko"
+}
+
+###
+POST http://localhost:3000/api/master-klausul
+Content-Type: application/json
+
+{
+  "kode": "7.2",
+  "nama": "Kepatuhan Regulasi",
+  "deskripsi": "Klausul tentang kepatuhan terhadap regulasi"
+}
+
+###
+POST http://localhost:3000/api/master-klausul
+Content-Type: application/json
+
+{
+  "kode": "6.3",
+  "nama": "Audit Internal",
+  "deskripsi": "Klausul tentang audit internal"
+}
+
+###
+### DATA IMPORT ENDPOINTS
+###
+
+### Get import template
+GET http://localhost:3000/api/import/template
+
+### Validate import data
+POST http://localhost:3000/api/import/validate
+Content-Type: application/json
+
+{
+  "data": [
+    {
+      "id": "38",
+      "klausulSmap": "8.1 - Perencanaan dan pengendalian operasi\n9.1 - Pemantauan, pengukuran, analisis dan evaluasi",
+      "pilar": "Pendeteksian",
+      "elemen": "Monitoring",
+      "subElemen": "Fraud dan Compliance Risk Assessment",
+      "pengukuran": "Pemenuhan Pemantauan Compliance Risk Assessment",
+      "jadwalPengerjaan": "Dilakukan setiap Triwulan",
+      "semester1": "10/04/2024",
+      "semester2": "",
+      "kualitasPemenuhan": "Kualitas",
+      "indikator": "Pemantauan monitoring dan evaluasi CRA",
+      "evidence": "Monev efektivitas CRA",
+      "linkEvidence": "https://example.com/evidence",
+      "pic": "Tim SDM",
+      "status": "PLANNED",
+      "updatedAt": ""
+    }
+  ]
+}
+
+### Import data from JSON
+POST http://localhost:3000/api/import/json
+Content-Type: application/json
+
+{
+  "data": [
+    {
+      "id": "38",
+      "klausulSmap": "8.1 - Perencanaan dan pengendalian operasi\n9.1 - Pemantauan, pengukuran, analisis dan evaluasi",
+      "pilar": "Pendeteksian",
+      "elemen": "Monitoring",
+      "subElemen": "Fraud dan Compliance Risk Assessment",
+      "pengukuran": "Pemenuhan Pemantauan Compliance Risk Assessment",
+      "jadwalPengerjaan": "Dilakukan setiap Triwulan",
+      "semester1": "10/04/2024",
+      "semester2": "",
+      "kualitasPemenuhan": "Kualitas",
+      "indikator": "Pemantauan monitoring dan evaluasi CRA",
+      "evidence": "Monev efektivitas CRA",
+      "linkEvidence": "https://indonesiapower-my.sharepoint.com/:f:/g/personal/anindita_dana_plnindonesiapower_co_id/ElQ_FuNEHLNBn-kk4Er5uD8By8CQ8BMKnkxSEiDWRmwuxA?e=btE3nm",
+      "pic": "Tim SDM",
+      "status": "PLANNED",
+      "updatedAt": ""
+    },
+    {
+      "id": "39",
+      "klausulSmap": "9.4 - Tinjauan FKAP (Tim Kepatuhan)\n10.2 - Peningkatan berkelanjutan",
+      "pilar": "Pendeteksian",
+      "elemen": "Pelaporan",
+      "subElemen": "Tinjauan Tim Kepatuhan",
+      "pengukuran": "Kualitas Pelaksanaan Tugas dan Tanggung Jawab Tim Kepatuhan",
+      "jadwalPengerjaan": "Dilakukan setiap semester",
+      "semester1": "30/06/2025",
+      "semester2": "31/12/2025",
+      "kualitasPemenuhan": "Kualitas",
+      "indikator": "Kualitas Pelaksanaan Tugas dan Tanggung Jawab Tim Kepatuhan memenuhi kualitas sesuai ketentuan/prosedur yang berlaku.",
+      "evidence": "1. Workplan program kepatuhan Unit / Bidang yang ditandatangani GM/SM/MU/VP\n2. Laporan Tim Kepatuhan \n3. Nilai akhir Maturity Level semester sebelumnya mencapai target",
+      "linkEvidence": "https://indonesiapower-my.sharepoint.com/:f:/g/personal/anindita_dana_plnindonesiapower_co_id/EqCFOPeUnc9JgE70FEc47f0B5zqAdJnh4BdRq_8NpUxeqw?e=IyunB7",
+      "pic": "Tim SDM",
+      "status": "PLANNED",
+      "updatedAt": ""
+    }
+  ],
+  "createdBy": "test-user",
+  "options": {
+    "defaultYear": 2024,
+    "logProgress": true
+  }
+}
+
+### Import data from file (use form-data)
+### Note: This requires a multipart/form-data request with a JSON file
+### You can test this using Postman or similar tools
+POST http://localhost:3000/api/import/file
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="import-data.json"
+Content-Type: application/json
+
+[
+  {
+    "id": "test-file-import",
+    "klausulSmap": "8.1 - Test Import",
+    "pilar": "Test Pilar",
+    "elemen": "Test Elemen",
+    "subElemen": "Test Sub Elemen",
+    "pengukuran": "Test Pengukuran",
+    "jadwalPengerjaan": "Test Schedule",
+    "semester1": "31/12/2024",
+    "kualitasPemenuhan": "Test Quality",
+    "indikator": "Test Indicator",
+    "evidence": "Test Evidence",
+    "pic": "Test PIC",
+    "status": "PLANNED"
+  }
+]
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="createdBy"
+
+file-test-user
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="defaultYear"
+
+2024
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+### ADDITIONAL ENDPOINTS FOR COMPLETE HIERARCHY
+###
+
+### Get all master elemen
+GET http://localhost:3000/api/master-elemen
+
+### Get all master sub elemen
+GET http://localhost:3000/api/master-sub-elemen
+
+### Get all pengukuran master
+GET http://localhost:3000/api/pengukuran-master
+
+### Get pengukuran with execution summary
+GET http://localhost:3000/api/pengukuran-master/{{pengukuran_id}}/execution-summary?tahun=2024
