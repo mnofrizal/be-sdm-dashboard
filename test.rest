@@ -236,6 +236,9 @@ PATCH http://localhost:3000/api/pelaksanaan-semester/{{pelaksanaan_id}}/progress
 Content-Type: application/json
 
 {
+    "picPelaksana": "John Doe",
+  "linkEvidenceActual": "https://example.com/evidence",
+  "status": "IN_PROGRESS",
   "progress": 50,
   "updatedBy": "admin"
 }
