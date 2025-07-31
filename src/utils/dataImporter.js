@@ -15,7 +15,8 @@ class DataImporter {
   // Parse klausul codes from klausulSmap string
   parseKlausulCodes(klausulSmap) {
     const codes = [];
-    const matches = klausulSmap.match(/\d+\.\d+/g);
+    // Match patterns like "4.5", "7.2.1", "7.2.2.2", "8.2", etc.
+    const matches = klausulSmap.match(/\d+(?:\.\d+)*/g);
     if (matches) {
       codes.push(...matches);
     }
@@ -76,9 +77,35 @@ class DataImporter {
         }
 
         try {
+          // Skip items with invalid or empty data
+          if (
+            !item.klausulSmap ||
+            !item.pilar ||
+            !item.elemen ||
+            !item.subElemen ||
+            !item.pengukuran
+          ) {
+            if (logProgress) {
+              console.log(`Skipping item ${i + 1}: Missing required fields`);
+            }
+            continue;
+          }
+
           // 1. Process Klausul(s)
           const klausulCodes = this.parseKlausulCodes(item.klausulSmap);
           let klausulId = null;
+
+          // Skip if no valid klausul codes found
+          if (klausulCodes.length === 0) {
+            if (logProgress) {
+              console.log(
+                `Skipping item ${i + 1}: No valid klausul codes found in "${
+                  item.klausulSmap
+                }"`
+              );
+            }
+            continue;
+          }
 
           for (const kode of klausulCodes) {
             const klausulNama = this.extractKlausulName(item.klausulSmap, kode);
@@ -112,6 +139,16 @@ class DataImporter {
             if (!klausulId) {
               klausulId = this.importedData.klausul.get(klausulKey);
             }
+          }
+
+          // Ensure we have a valid klausulId before proceeding
+          if (!klausulId) {
+            if (logProgress) {
+              console.log(
+                `Skipping item ${i + 1}: Could not determine klausulId`
+              );
+            }
+            continue;
           }
 
           // 2. Process Pilar
@@ -223,15 +260,19 @@ class DataImporter {
           }
 
           // 5. Process PengukuranMaster
-          const pengukuranKey = this.createKey(subElemenId, item.pengukuran);
+          const pengukuranKey = this.createKey(
+            subElemenId,
+            `${item.pengukuran}_${item.indikator}`
+          );
           let pengukuranId;
 
           if (!this.importedData.pengukuran.has(pengukuranKey)) {
             const pengukuran = await prisma.pengukuranMaster.upsert({
               where: {
-                subElemenId_namaPengukuran: {
+                subElemenId_namaPengukuran_indikator: {
                   subElemenId,
                   namaPengukuran: item.pengukuran,
+                  indikator: item.indikator,
                 },
               },
               update: {

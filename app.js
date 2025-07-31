@@ -75,6 +75,10 @@ app.get("/api", (req, res) => {
         "GET /api/master-klausul?tahun=2024": "Filter by year",
         "GET /api/master-klausul?semester=S1&tahun=2024":
           "Filter by semester and year",
+        "GET /api/master-klausul/semester-groups":
+          "Get klausul grouped by semester (S1 and S2)",
+        "GET /api/master-klausul/semester-groups?tahun=2024":
+          "Get semester groups filtered by year",
         "GET /api/master-klausul/:id": "Get klausul by ID with full hierarchy",
         "GET /api/master-klausul/:id?semester=S1":
           "Get klausul by ID filtered by semester",

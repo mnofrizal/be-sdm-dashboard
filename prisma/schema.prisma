@@ -96,7 +96,7 @@ model PengukuranMaster {
     subElemen           MasterSubElemen       @relation(fields: [subElemenId], references: [id], onDelete: Cascade)
     pelaksanaanSemester PelaksanaanSemester[]
 
-    @@unique([subElemenId, namaPengukuran])
+    @@unique([subElemenId, namaPengukuran, indikator])
     @@map("pengukuran_master")
 }
 

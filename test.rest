@@ -15,15 +15,16 @@ GET http://localhost:3000/api/master-klausul
 GET http://localhost:3000/api/master-klausul?page=1&limit=5
 
 ### Get all klausul with search
-GET http://localhost:3000/api/master-klausul?search=9.4
+GET http://localhost:3000/api/master-klausul?search=4.5
+
 
 ### Get all klausul with filter
 GET http://localhost:3000/api/master-klausul?isActive=true
 
-### Get all klausul filtered by semester S1
+### Get all klausul filtered by semester S1 (should return 2 klausul - both have S1 data)
 GET http://localhost:3000/api/master-klausul?semester=S1
 
-### Get all klausul filtered by semester S2
+### Get all klausul filtered by semester S2 (should return 1 klausul - only second has S2 data)
 GET http://localhost:3000/api/master-klausul?semester=S2
 
 ### Get all klausul filtered by year 2024
@@ -34,6 +35,15 @@ GET http://localhost:3000/api/master-klausul?semester=S1&tahun=2024
 
 ### Get all klausul filtered by semester S2 and year 2024
 GET http://localhost:3000/api/master-klausul?semester=S2&tahun=2024
+
+### Get klausul grouped by semester (S1 and S2)
+GET http://localhost:3000/api/master-klausul/semester-groups
+
+### Get klausul grouped by semester filtered by year 2024
+GET http://localhost:3000/api/master-klausul/semester-groups?tahun=2024
+
+### Get klausul grouped by semester with search filter
+GET http://localhost:3000/api/master-klausul/semester-groups?search=8.1
 
 ### Create new klausul
 POST http://localhost:3000/api/master-klausul

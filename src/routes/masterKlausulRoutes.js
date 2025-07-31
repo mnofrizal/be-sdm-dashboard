@@ -50,6 +50,7 @@ const updateValidation = [
 
 // Routes
 router.get("/", masterKlausulController.getAll);
+router.get("/semester-groups", masterKlausulController.getBySemesterGroup);
 router.get("/:id", masterKlausulController.getById);
 router.get("/:id/stats", masterKlausulController.getWithStats);
 router.post("/", createValidation, masterKlausulController.create);
