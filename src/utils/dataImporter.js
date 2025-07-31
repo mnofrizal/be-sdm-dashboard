@@ -313,10 +313,10 @@ class DataImporter {
 
           // 6. Process PelaksanaanSemester
           const semesters = [];
-          if (item.semester1) {
+          if (item.semester1 && item.semester1.trim() !== "") {
             semesters.push({ semester: "S1", tanggalTarget: item.semester1 });
           }
-          if (item.semester2) {
+          if (item.semester2 && item.semester2.trim() !== "") {
             semesters.push({ semester: "S2", tanggalTarget: item.semester2 });
           }
 
