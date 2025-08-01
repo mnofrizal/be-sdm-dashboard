@@ -9,6 +9,7 @@ const path = require("path");
 const errorHandler = require("./src/middleware/errorHandler");
 
 // Import routes
+const authRoutes = require("./src/routes/authRoutes");
 const masterKlausulRoutes = require("./src/routes/masterKlausulRoutes");
 const masterPilarRoutes = require("./src/routes/masterPilarRoutes");
 const masterElemenRoutes = require("./src/routes/masterElemenRoutes");
@@ -52,6 +53,7 @@ app.get("/health", (req, res) => {
 });
 
 // API routes
+app.use("/api/auth", authRoutes);
 app.use("/api/master-klausul", masterKlausulRoutes);
 app.use("/api/master-pilar", masterPilarRoutes);
 app.use("/api/master-elemen", masterElemenRoutes);
@@ -69,6 +71,15 @@ app.get("/api", (req, res) => {
     endpoints: {
       "GET /health": "Health check",
       "GET /api": "API documentation",
+      "Authentication": {
+        "POST /api/auth/register": "Register new user",
+        "POST /api/auth/login": "Login user",
+        "GET /api/auth/profile": "Get user profile (requires token)",
+        "PUT /api/auth/profile": "Update user profile (requires token)",
+        "POST /api/auth/change-password": "Change password (requires token)",
+        "POST /api/auth/refresh-token": "Refresh JWT token",
+        "POST /api/auth/logout": "Logout user (requires token)"
+      },
       "Master Klausul": {
         "GET /api/master-klausul": "Get all klausul with complete hierarchy",
         "GET /api/master-klausul?semester=S1": "Filter by semester (S1/S2)",

@@ -1,0 +1,140 @@
+### Variables
+@baseUrl = http://localhost:3000
+@token = 
+
+### Health Check
+GET {{baseUrl}}/health
+
+### API Documentation
+GET {{baseUrl}}/api
+
+###
+
+### Register New User
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "name": "Admin User",
+  "password": "Admin123",
+  "role": "ADMIN"
+}
+
+###
+
+### Register Regular User
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "name": "Regular User",
+  "password": "User123",
+  "role": "USER"
+}
+
+###
+
+### Login with Full Email
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "sdm@msdm.app",
+  "password": "1234"
+}
+
+###
+
+### Login with Username (without @domain)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "sdm",
+  "password": "1234"
+}
+
+###
+
+### Login with Admin
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Admin123"
+}
+
+###
+
+### Get User Profile (Protected Route)
+# First login and copy the token to @token variable above
+GET {{baseUrl}}/api/auth/profile
+Authorization: Bearer {{token}}
+
+###
+
+### Update User Profile (Protected Route)
+PUT {{baseUrl}}/api/auth/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Updated Name",
+  "email": "updated@example.com"
+}
+
+###
+
+### Change Password (Protected Route)
+POST {{baseUrl}}/api/auth/change-password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "currentPassword": "1234",
+  "newPassword": "NewPass123",
+  "confirmPassword": "NewPass123"
+}
+
+###
+
+### Refresh Token
+POST {{baseUrl}}/api/auth/refresh-token
+Content-Type: application/json
+
+{
+  "token": "YOUR_JWT_TOKEN_HERE"
+}
+
+###
+
+### Logout (Protected Route)
+POST {{baseUrl}}/api/auth/logout
+Authorization: Bearer {{token}}
+
+###
+
+### Test Invalid Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "invalid@example.com",
+  "password": "wrongpassword"
+}
+
+###
+
+### Test Username Login (should work if user exists)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user",
+  "password": "User123"
+}
+
+###

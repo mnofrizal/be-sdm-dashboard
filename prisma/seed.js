@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const DataImporter = require("../src/utils/dataImporter");
+const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const path = require("path");
 
@@ -9,6 +10,33 @@ async function main() {
   console.log("🌱 Starting database seeding...");
 
   try {
+    // Create default user first
+    console.log("👤 Creating default user...");
+    
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email: "sdm@msdm.app" }
+    });
+
+    if (!existingUser) {
+      // Hash the password
+      const hashedPassword = await bcrypt.hash("1234", 12);
+      
+      // Create the user
+      await prisma.user.create({
+        data: {
+          email: "sdm@msdm.app",
+          name: "SDM Admin",
+          password: hashedPassword,
+          role: "ADMIN",
+          isActive: true
+        }
+      });
+      
+      console.log("✅ Default user created: sdm@msdm.app (password: 1234)");
+    } else {
+      console.log("👤 Default user already exists");
+    }
     // Read the sample data file
     const sampleDataPath = path.join(__dirname, "..", "sample-data.json");
 
